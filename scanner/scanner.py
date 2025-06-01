@@ -18,6 +18,7 @@ class Scanner:
 
 
     """ 
+        The main function for the scanner. 
         create all tokens based on the input source code
         raises ScannerException if unknown character
     """
