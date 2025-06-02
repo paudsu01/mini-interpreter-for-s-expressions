@@ -3,3 +3,6 @@ class ScannerException(Exception):
 
 class ParserException(Exception):
     pass
+
+class InterpreterException(Exception):
+    pass

@@ -1,18 +1,18 @@
-# Build you own mini-interpreter for S-expressions
+# Build you own mini-interpreter for S-expression
 
 ## What is this?
 
-This repository contains code for a "mini-interpreter" to handle s-expressions. My goal with this project is for this to serve as a stepping stone for someone wanting to build their own compiler or interpreter. I believe this project will help gain some experience before making an interpreter or a compiler for a toy language or beyond. <br>
+This repository contains code for a "mini-interpreter" to handle s-expression. My goal with this project is for this to serve as a stepping stone for someone wanting to build their own compiler or interpreter. I believe this project will help gain some experience before making an interpreter or a compiler for a toy language or beyond. <br>
 
 I use `python` for this so that it is easy to follow for anyone. I also decided to build an interpreter with the parser building an abstract representation rather than targeting machine code so that it is easy to follow. 
 
-## S-expressions
+## S-expression
 
-S-expression is an expression to represent a tree-structured data. Read more about [s-expressions](https://en.wikipedia.org/wiki/S-expression) or head to the [Parser](https://github.com/paudsu01/S-expression/#parser) section to understand more.
+S-expression is an expression to represent a tree-structured data. Read more about [s-expression](https://en.wikipedia.org/wiki/S-expression) or head to the [Parser](https://github.com/paudsu01/S-expression/#parser) section to understand more.
 
 ## Grammar
 
-The point of this mini-interpreter is to be as simple as possible. The goal is not a industrial strength interpeter but rather to understand evaluation of s-expressions. <br><br>
+The point of this mini-interpreter is to be as simple as possible. The goal is not a industrial strength interpeter but rather to understand evaluation of s-expression. <br><br>
 So, for the sake of simplicity, our language only supports three binary operators: `+`, `-`, `*`. We assume the `+` and `-` operators can only be binary for the sake of simplicity. Here is the grammar for our tiny language:
 <br><br>
 Anything within double quotations is a terminal and anything not within double quotations is a variable(non-terminal). Exception being `NUMBER` which is a terminal as well where `NUMBER` matches the regex `[0-9]+`. Our starting variable is `expr`. Below are the production rules:
@@ -81,7 +81,7 @@ We start with the `root` node. Interpreting any node would mean the following fo
 I would recommend forking the repository and cloning the forked repository first so that you can understand, modify and enhance the code.  
 There are a number of ways you can go from here.
 * Try to understand what is going on from scanning to parsing to interpreting. Try to look at the abstract representation of our code after parsing using a `breakpoint()` or so.
-* Change the grammar and implementation to support unary s-expressions like `(- 5)` or `(+ 4)` because as of now, we would need to use `(- 0 5)` to evaluate `-5`. It would be nice to just have `(- 5)` s-expression evaluate to `-5`.
+* Change the grammar and implementation to support unary s-expression like `(- 5)` or `(+ 4)` because as of now, we would need to use `(- 0 5)` to evaluate `-5`. It would be nice to just have `(- 5)` s-expression evaluate to `-5`.
 * Support division as an operator. Moreover, you can also try supporting strings and operations like string concatenation using `(+ "aaa" "bbb")` which should evaluate to `"aaabbb"`
 * I have used the simple and efficient recursive descent parser for this implementation. However, since our grammar is small and context-free, this would be a great time to try other parsing methods like bottom-up parsers and so on. 
 * Add more robust error-handling and support error sychronization. Right now, as soon as there is a single error, we abort our program.
