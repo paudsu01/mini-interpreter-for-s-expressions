@@ -1,11 +1,6 @@
 from __future__ import annotations
 
-import sys
-import os
-node_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'parser')
-sys.path.append(node_path)
-
-from node import Node, NodeType
+from parser.node import Node, NodeType
 
 class Interpreter:
 

@@ -1,14 +1,8 @@
 from __future__ import annotations
 from typing import Iterator
-from stoken import SToken, TType
 
-# setting path to import ScannerException
-import sys
-import os
-exceptions_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'exceptions')
-sys.path.append(exceptions_path)
-from exceptions import ScannerException
-
+from exceptions.exceptions import ScannerException
+from scanner.stoken import SToken, TType
 
 class Scanner:
 

@@ -1,17 +1,9 @@
 from __future__ import annotations
 from typing import List, Tuple
-from node import Node, LiteralNode, BinaryNode, NodeType
+from parser.node import Node, LiteralNode, BinaryNode, NodeType
 
-import sys
-import os
-scanner_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'scanner')
-exceptions_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'exceptions')
-sys.path.append(scanner_path)
-sys.path.append(exceptions_path)
-
-from stoken import SToken, TType
-from scanner import Scanner
-from exceptions import ParserException
+from scanner.stoken import SToken, TType
+from exceptions.exceptions import ParserException
 
 
 class Parser:
@@ -20,8 +12,11 @@ class Parser:
         self.__tokens = tokens
         self.__current_token_index = 0
 
-    def parse(self) -> Node:
-        return self.__expr()
+    def parse(self) -> List[Node]:
+        nodes = []
+        while (self.__current_token_index < len(self.__tokens)):
+            nodes.append(self.__expr())
+        return nodes
 
     """ Main parsing functions to implement recursive descent parsing """
 
