@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Tuple
 from node import Node, LiteralNode, BinaryNode, NodeType
 
 import sys
@@ -32,8 +32,16 @@ class Parser:
             # This must mean our production rule is now
             # expr -> "(" (+|-|*) expr expr ")"
             
-            # TODO
+            # Consume the operator and get the NodeType value based on that
+            node_type : NodeType = self.__operator()
+
+            # Now, you get why the parsing is called recusrive descent !
+            left_node : Node = self.__expr()
+            right_node : Node = self.__expr()
+
             self.__consume_token(TType.TOKEN_RIGHT_PAREN)
+
+            return BinaryNode(node_type, left_node, right_node)
 
         else:
             # Since we don't have a '(' as the first token, we must have a literal constant
@@ -45,7 +53,7 @@ class Parser:
         # So, let us create a LiteralNode with that value
 
         # Get the current token
-        token = self.__tokens[self.__current_token_index]
+        token : SToken = self.__tokens[self.__current_token_index]
 
         # Check if the current token is of number token type and consume if so
         self.__consume_token(TType.TOKEN_NUMBER)
@@ -53,19 +61,44 @@ class Parser:
         # Create a node for the parse tree and return
         return LiteralNode(NodeType.NODE_LITERAL, int(token.value))
 
+    """
+        Unlike __literal and __expr, the __operator method doesn't return a tree node, instead it just
+        tries to consume a operator and returns the valid NodeType
+    """
+    def __operator(self) -> NodeType:
+        token : SToken = self.__tokens[self.__current_token_index]
+
+        self.__consume_token(TType.TOKEN_ADD, TType.TOKEN_SUBTRACT, TType.TOKEN_MULTIPLY)
+
+        if (token.type == TType.TOKEN_ADD):
+            return NodeType.NODE_ADD
+        elif (token.type == TType.TOKEN_SUBTRACT):
+            return NodeType.NODE_SUBTRACT
+        else:
+            return NodeType.NODE_MULTIPLY
+
 
     """ Helper functions """
 
     # Consume a SToken
-    def __consume_token(self, token_type: TType) -> None:
-        token = self.__tokens[self.__current_token_index]
-        if (token_type == token.type):
-            self.__current_token_index += 1
+    def __consume_token(self, *token_types: Tuple[TType]) -> None:
+
+        if (self.__current_token_index >= len(self.__tokens)):
+            raise ParserException("Out of tokens to consume")
+
         else:
-            raise ParserException(f'Expected {token_type.value}, got {token.value}')
+            token : SToken = self.__tokens[self.__current_token_index]
+
+            if (token.type in token_types):
+                self.__current_token_index += 1
+
+            else:
+                raise ParserException(f'Expected {", ".join([i.value for i in token_types])}, got {token.value}')
 
     # Consume the token if it matches, do nothing otherwise
     def __match_token(self, token_type: TType) -> None:
-        token = self.__tokens[self.__current_token_index]
+
+        token : SToken = self.__tokens[self.__current_token_index]
+
         if (token_type == token.type):
             self.__consume_token()
