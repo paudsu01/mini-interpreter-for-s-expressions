@@ -4,7 +4,9 @@ from stoken import SToken, TType
 
 # setting path to import ScannerException
 import sys
-sys.path.append('../exceptions/')
+import os
+exceptions_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'exceptions')
+sys.path.append(exceptions_path)
 from exceptions import ScannerException
 
 
@@ -18,6 +20,7 @@ class Scanner:
 
 
     """ 
+        The main function for the scanner. 
         create all tokens based on the input source code
         raises ScannerException if unknown character
     """
@@ -56,7 +59,7 @@ class Scanner:
             elif (current_char in '0123456789'):
                 start_index = index
                 # Consume all the characters for our number value
-                while (self.__input_stream[index] in '0123456789'):
+                while (index < len(self.__input_stream) and self.__input_stream[index] in '0123456789'):
                     index += 1
 
                 self.__add_token(start_index, index, TType.TOKEN_NUMBER)
@@ -85,3 +88,7 @@ class Scanner:
 
     def __iter__(self) -> Iterator:
         return iter(self.__tokens)
+
+    @property
+    def tokens(self):
+        return self.__tokens
