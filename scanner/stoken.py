@@ -24,9 +24,9 @@ class SToken:
 
 
 class TType(Enum):
-    TOKEN_LEFT_PAREN = 0
-    TOKEN_RIGHT_PAREN = 1
-    TOKEN_ADD = 2
-    TOKEN_SUBTRACT = 3
-    TOKEN_MULTIPLY = 4 
-    TOKEN_NUMBER = 5
+    TOKEN_LEFT_PAREN = '('
+    TOKEN_RIGHT_PAREN = ')'
+    TOKEN_ADD = '+'
+    TOKEN_SUBTRACT = '-'
+    TOKEN_MULTIPLY = '*' 
+    TOKEN_NUMBER = 'NUMBER'
