@@ -3,10 +3,14 @@ from typing import List, Tuple
 from node import Node, LiteralNode, BinaryNode, NodeType
 
 import sys
-sys.path.append("../scanner/")
-sys.path.append("../exceptions/")
+import os
+scanner_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'scanner')
+exceptions_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'exceptions')
+sys.path.append(scanner_path)
+sys.path.append(exceptions_path)
 
 from stoken import SToken, TType
+from scanner import Scanner
 from exceptions import ParserException
 
 
@@ -17,7 +21,7 @@ class Parser:
         self.__current_token_index = 0
 
     def parse(self) -> Node:
-        return self.__parseExpr()
+        return self.__expr()
 
     """ Main parsing functions to implement recursive descent parsing """
 
@@ -28,7 +32,7 @@ class Parser:
     """
     def __expr(self) -> Node:
 
-        if self.__match_token(TType.TOKEN_LEFT_PAREN):
+        if (self.__match_token(TType.TOKEN_LEFT_PAREN)):
             # This must mean our production rule is now
             # expr -> "(" (+|-|*) expr expr ")"
             
@@ -96,9 +100,11 @@ class Parser:
                 raise ParserException(f'Expected {", ".join([i.value for i in token_types])}, got {token.value}')
 
     # Consume the token if it matches, do nothing otherwise
-    def __match_token(self, token_type: TType) -> None:
+    def __match_token(self, token_type: TType) -> bool:
 
         token : SToken = self.__tokens[self.__current_token_index]
 
         if (token_type == token.type):
-            self.__consume_token()
+            self.__consume_token(token_type)
+            return True
+        return False
